@@ -25,8 +25,6 @@ struct Result: Decodable {
 struct Info: Decodable{
     let count: Int
     let pages: Int
-//    let next: String?
-//    let prev: String?
 }
 struct Location: Decodable{
     let name: String
