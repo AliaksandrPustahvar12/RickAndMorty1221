@@ -26,11 +26,17 @@ final class CharactersController: CharactersControllerProtocol {
     init(view: CharactersViewProtocol?) {
         self.view = view
         
+        DispatchQueue.main.async {
+            view?.spinner.startAnimating()
+        }
+        
         Task {
             if let charactersFromJson: Character = try await netService.getJSON(url: urlRequest) {
                 characters.append(contentsOf: charactersFromJson.results)
                 await getCharacters(for: charactersFromJson.info.pages)
+                
                 DispatchQueue.main.async {
+                    view?.spinner.stopAnimating()
                     view?.reloadCollection()
                 }
             }

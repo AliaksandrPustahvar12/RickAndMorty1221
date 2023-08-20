@@ -7,10 +7,11 @@
 
 import Foundation
 
-struct Character: Decodable{
+struct Character: Decodable {
     let results: [Result]
     let info: Info
 }
+
 struct Result: Decodable {
     let name: String
     let status: String
@@ -18,14 +19,16 @@ struct Result: Decodable {
     let gender: String
     let type: String
     let image: String
-    let location: Location
+    let origin: Origin
     let url: String
     let episode: [String]
 }
-struct Info: Decodable{
+
+struct Info: Decodable {
     let count: Int
     let pages: Int
 }
-struct Location: Decodable{
+
+struct Origin: Decodable {
     let name: String
 }

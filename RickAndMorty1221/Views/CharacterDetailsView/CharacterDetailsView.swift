@@ -124,7 +124,7 @@ struct CharacterDetailsView: View {
                             .cornerRadius(16)
                         
                         VStack(alignment: .leading, spacing: 12) {
-                            Text(character.location.name)
+                            Text(character.origin.name)
                                 .font(.system(size: 17))
                                 .foregroundColor(.white)
                             
@@ -207,6 +207,6 @@ struct CharacterDetailsView: View {
 
 struct CharacterDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        CharacterDetailsView( character: .init(name: "Rick", status: "Alive", species: "None", gender: "Male", type: "Human", image: "some url", location: .init(name: "Earth"), url: "some url", episode: ["ep1"]))
+        CharacterDetailsView( character: .init(name: "Rick", status: "Alive", species: "None", gender: "Male", type: "Human", image: "some url", origin: .init(name: "Earth"), url: "some url", episode: ["ep1"]))
     }
 }

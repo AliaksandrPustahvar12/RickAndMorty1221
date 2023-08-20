@@ -11,6 +11,8 @@ import SwiftUI
 protocol CharactersViewProtocol: AnyObject {
     func setController(_ controller: CharactersControllerProtocol)
     func reloadCollection()
+    var spinner: UIActivityIndicatorView { get }
+    
 }
 
 class CharactersView: UIViewController {
@@ -18,6 +20,7 @@ class CharactersView: UIViewController {
     private var controller: CharactersControllerProtocol?
     
     private let titleLabel = UILabel()
+    let spinner = UIActivityIndicatorView()
     
     private lazy var charactersView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -34,9 +37,10 @@ class CharactersView: UIViewController {
         view.backgroundColor = UIColor.backgroundColor
         setUpLabel()
         setUpCollectionView()
+        setUpSpinner()
     }
     
-    func setUpLabel() {
+    private func setUpLabel() {
         titleLabel.text = "Characters"
         titleLabel.font = UIFont.systemFont(ofSize: 28, weight: .semibold)
         titleLabel.textColor = .white
@@ -51,7 +55,22 @@ class CharactersView: UIViewController {
         ])
     }
     
-    func setUpCollectionView() {
+    private func  setUpSpinner() {
+        spinner.style = .large
+        spinner.color = UIColor.white
+        spinner.hidesWhenStopped = true
+        charactersView.addSubview(spinner)
+        
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            spinner.topAnchor.constraint(equalTo: charactersView.topAnchor, constant: 200),
+            spinner.widthAnchor.constraint(equalToConstant: 300),
+            spinner.heightAnchor.constraint(equalToConstant: 300)
+        ])
+    }
+    
+    private func setUpCollectionView() {
         charactersView.delegate = self
         charactersView.dataSource = self
         charactersView.register(CharacterCell.self, forCellWithReuseIdentifier: "CharacterCell")
@@ -96,8 +115,8 @@ extension CharactersView: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         
-        let character = controller?.characters[indexPath.row]
-        let vc = CharacterDetailsView(character: character!)
+        guard let character = controller?.characters[indexPath.row] else { return }
+        let vc = CharacterDetailsView(character: character)
         let hostingController = UIHostingController(rootView: vc)
         hostingController.modalTransitionStyle = .flipHorizontal
         hostingController.modalPresentationStyle = .fullScreen
